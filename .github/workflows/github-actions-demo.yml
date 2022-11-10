@@ -17,11 +17,14 @@ jobs:
           ls
       - name: Build app
         run: |
+          cd Task-B
           ./build.sh
       - name: Run app
         run: |
+          cd Task-B
           ./run.sh
       - name: Test app
         run: |
+          cd Task-B
           ./test.sh
       - run: echo "🍏 This job's status is ${{ job.status }}."
