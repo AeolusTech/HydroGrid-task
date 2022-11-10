@@ -1,5 +1,17 @@
 # How to run
 
+
+## Build
 ```
-docker build --tag test-image . && docker run --rm --name test-run test-image
+./build.sh
+```
+
+## Run
+```
+./run.sh
+```
+
+## Test
+```
+./test.sh
 ```
