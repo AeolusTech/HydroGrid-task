@@ -8,23 +8,30 @@ def process_json(input_json):
     # first_timestamp = int(data['timeseries'][0]['timestamp'])
     timeseries_data = input_json['timeseries']
 
-    amount_of_timestamps_without_last_and_first = len(input_json['timeseries'][1:-2])
+    amount_of_timestamps_without_last_one = len(input_json['timeseries'][0:-2])
 
-    for element_index in range(amount_of_timestamps_without_last_and_first):
+    new_timeseries = input_json
+    new_timeseries['timeseries'] = []
+
+    previous_time = int((timeseries_data[0]['timestamp']))
+
+    for element_index in range(amount_of_timestamps_without_last_one):
         current_time = int(timeseries_data[element_index]['timestamp'])
-        previous_time = int(timeseries_data[element_index - 1]['timestamp'])
-        time_diff = current_time - previous_time
-        time_diff_in_half_hours = time_diff / HALF_HOUR_IN_MILLISECONDS
-        print(f'{time_diff_in_half_hours} hour')
+        # time_diff_in_half_hours = time_diff / HALF_HOUR_IN_MILLISECONDS
+        only_thirty_minutes_passed = (current_time - previous_time) == HALF_HOUR_IN_MILLISECONDS
+        is_only_at_full_or_half_hour = current_time % HALF_HOUR_IN_MILLISECONDS == 0
+        if is_only_at_full_or_half_hour and only_thirty_minutes_passed:
+            new_timeseries['timeseries'].append(timeseries_data[element_index])
 
-    return json.loads('{"turbine": null}')
+    return new_timeseries
 
 
 def main():
     with open('./TimeseriesEqualizer_Input.json', 'r') as f:
         data = json.load(f)
 
-    process_json(data)
+    print(process_json(data))
+
 
 class TestMyModule(unittest.TestCase):
     def compare(self, a, b):
@@ -97,6 +104,7 @@ class TestMyModule(unittest.TestCase):
         }
         """
         )
+        print(process_json(input_json))
         self.compare(process_json(input_json), expected_output)
 
     def test_B(self):
@@ -141,6 +149,7 @@ class TestMyModule(unittest.TestCase):
         }
         """
         )
+        print(process_json(input_json))
         self.compare(process_json(input_json), expected_output)
 
 
