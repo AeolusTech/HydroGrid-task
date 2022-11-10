@@ -3,7 +3,7 @@ run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
 on: [push]
 defaults:
  run:
-  working-directory: ${{ github.repository }}/TaskB
+  working-directory: "${{ github.repository }}/TaskB"
 jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
