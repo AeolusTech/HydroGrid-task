@@ -27,8 +27,16 @@ def main():
     process_json(data)
 
 class TestMyModule(unittest.TestCase):
-    def _compare(self, a, b):
-        assert sorted(a.items()) == sorted(b.items())
+    def compare(self, a, b):
+        assert self.ordered(a) == self.ordered(b)
+
+    def ordered(self, obj):
+        if isinstance(obj, dict):
+            return sorted((k, self.ordered(v)) for k, v in obj.items())
+        if isinstance(obj, list):
+            return sorted(self.ordered(x) for x in obj)
+        else:
+            return obj
 
     def test_dummy_should_pass(self):
         input_json = json.loads("""
@@ -43,7 +51,7 @@ class TestMyModule(unittest.TestCase):
             "power_unit": "MW"
         }
         """)
-        expected_output = json.loads("""
+        expected_output_same_as_input_different_order = json.loads("""
         {
             "turbine": "B",
             "power_unit": "MW",
@@ -56,7 +64,7 @@ class TestMyModule(unittest.TestCase):
         }
         """
         )
-        self._compare(input_json, expected_output)
+        self.compare(input_json, expected_output_same_as_input_different_order)
 
     def test_A(self):
         input_json = json.loads("""
@@ -89,7 +97,7 @@ class TestMyModule(unittest.TestCase):
         }
         """
         )
-        self._compare(process_json(input_json), expected_output)
+        self.compare(process_json(input_json), expected_output)
 
     def test_B(self):
         input_json = json.loads("""
@@ -133,7 +141,7 @@ class TestMyModule(unittest.TestCase):
         }
         """
         )
-        self._compare(process_json(input_json), expected_output)
+        self.compare(process_json(input_json), expected_output)
 
 
 if __name__ == '__main__':
