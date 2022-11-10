@@ -1,9 +1,6 @@
 name: GitHub Actions CI job for Task B
 run-name: ${{ github.actor }} triggered test of Task-B for Hydrogrid interview GitHub Actions 🚀
 on: [push]
-defaults:
- run:
-  working-directory: "Task-B"
 jobs:
   GitHub-Actions-for-Task-B:
     runs-on: ubuntu-latest
