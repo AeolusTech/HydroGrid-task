@@ -1,6 +1,9 @@
 name: GitHub Actions CI job for Task B
 run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
 on: [push]
+defaults:
+ run:
+  working-directory: ${{ github.repository }}/TaskB
 jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
@@ -13,15 +16,12 @@ jobs:
       - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
       - run: echo "🖥️ The workflow is now ready to test your code on the runner."
       - name: Build app
-        working-directory: ./TaskB
         run: |
           ./build.sh
       - name: Run app
-        working-directory: ./TaskB
         run: |
           ./run.sh
       - name: Test app
-        working-directory: ./TaskB
         run: |
           ./test.sh
       - run: echo "🍏 This job's status is ${{ job.status }}."
